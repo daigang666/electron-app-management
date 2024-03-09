@@ -88,55 +88,56 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NButton, NTag, NRadio, NRadioGroup, NModal, useMessage } from 'naive-ui';
-import { payTest, getProduct, getPayStatus } from '@/api/product';
-import { LogoWechat, LogoAlipay } from '@vicons/ionicons5';
-import { ref, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
-import QRCode from 'qrcode';
-import { useUserStore } from '@/store';
+import { NCard, NButton, NTag, NRadio, NRadioGroup, NModal, useMessage } from 'naive-ui'
+import { payTest, getProduct, getPayStatus } from '@/api/product'
+import { LogoWechat, LogoAlipay } from '@vicons/ionicons5'
+import { ref, onMounted } from 'vue'
+// import { useI18n } from 'vue-i18n';
+// import QRCode from 'qrcode'
+import { useUserStore } from '@/store'
 
 interface Product {
-  id: number;
-  title: string;
-  stype: number;
-  num: number;
-  price: string;
-  tokenLimit: number;
-  type: string;
-  createdAt: string;
-  updatedAt: string;
+  id: number
+  title: string
+  stype: number
+  num: number
+  price: string
+  tokenLimit: number
+  type: string
+  createdAt: string
+  updatedAt: string
 }
-const { t } = useI18n();
-const message = useMessage();
-const userStore = useUserStore();
+// const { t } = useI18n();
+const t = (str: string) => str
+const message = useMessage()
+const userStore = useUserStore()
 
-const qrCodeRef = ref(null);
-const showModal = ref(false);
-const payWay = ref('wxpay');
-const buyProduct = ref<Product>();
-const payLoading = ref(false);
-const packageList = ref<Product[]>([]);
-const isWaitingPayDone = ref<boolean>(false);
-const isQRCodePay = ref<boolean>(false);
-let orderId = '';
+const qrCodeRef = ref(null)
+const showModal = ref(false)
+const payWay = ref('wxpay')
+const buyProduct = ref<Product>()
+const payLoading = ref(false)
+const packageList = ref<Product[]>([])
+const isWaitingPayDone = ref<boolean>(false)
+const isQRCodePay = ref<boolean>(false)
+let orderId = ''
 
 const handleModalClose = () => {
-  isWaitingPayDone.value = false;
-};
+  isWaitingPayDone.value = false
+}
 const handleOpenBuy = (item: Product) => {
-  buyProduct.value = item;
-  showModal.value = true;
-};
+  buyProduct.value = item
+  showModal.value = true
+}
 const handleBuy = () => {
-  payLoading.value = true;
+  payLoading.value = true
   payTest({
     user_email: localStorage.getItem('userName'),
     product_id: buyProduct.value?.id,
-    payment_type: payWay.value,
+    payment_type: payWay.value
   })
-    .then((res) => {
-      console.log(res);
+    .then(res => {
+      console.log(res)
       // {
       // "payurl": "",
       // "qrcode": "https://qr.alipay.com/bax06886xsrma24srtuq30de",
@@ -144,48 +145,48 @@ const handleBuy = () => {
       // }
       if (res.data.qrcode) {
         // 渲染二维码
-        QRCode.toCanvas(qrCodeRef.value, res.data.qrcode, {
-          width: 200,
-          height: 200,
-        });
-        isQRCodePay.value = true;
+        // QRCode.toCanvas(qrCodeRef.value, res.data.qrcode, {
+        //   width: 200,
+        //   height: 200
+        // })
+        isQRCodePay.value = true
       } else {
-        window.open(res.data.payurl || res.data.urlscheme, '_blank');
+        window.open(res.data.payurl || res.data.urlscheme, '_blank')
       }
-      orderId = res.data.trade_no;
-      isWaitingPayDone.value = true;
+      orderId = res.data.trade_no
+      isWaitingPayDone.value = true
     })
     .finally(() => {
-      payLoading.value = false;
-    });
-};
+      payLoading.value = false
+    })
+}
 const handleCheckPay = () => {
   getPayStatus({
     user_email: localStorage.getItem('userName'),
-    trade_no: orderId,
+    trade_no: orderId
   })
-    .then(async (res) => {
+    .then(async res => {
       if (res.data.payment_status === 'paied') {
-        message.success('订单支付成功！，将为您更新会员信息...');
-        await userStore.getUserInfo();
-        showModal.value = false;
+        message.success('订单支付成功！，将为您更新会员信息...')
+        await userStore.getUserInfo()
+        showModal.value = false
       } else if (res.data.payment_status === 'unpaied') {
-        message.warning('订单未支付！');
+        message.warning('订单未支付！')
       }
     })
     .catch(() => {
-      message.error('支付出现异常！如若已成功支付，请联系管理员解决');
-    });
-};
-onMounted(() => {
-  console.log('mounted');
-  getProduct({})
-    .then((res) => {
-      console.log(res);
-      packageList.value = res.data.productList;
+      message.error('支付出现异常！如若已成功支付，请联系管理员解决')
     })
-    .catch((rej) => {
-      console.log(rej);
-    });
-});
+}
+onMounted(() => {
+  console.log('mounted')
+  getProduct({})
+    .then(res => {
+      console.log(res)
+      packageList.value = res.data.productList
+    })
+    .catch(rej => {
+      console.log(rej)
+    })
+})
 </script>

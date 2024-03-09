@@ -9,6 +9,7 @@ export type IPCEventName =
   | 'retryDownloadFile'
   | 'openFileDialog'
   | 'openFile'
+  | 'unzipFile'
   | 'openFileInFolder'
   | 'initDownloadItem'
   | 'pauseOrResume'

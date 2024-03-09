@@ -56,7 +56,7 @@
 import { ref } from 'vue'
 import { NAlert, NIcon } from 'naive-ui'
 import { PersonOutline, SettingsOutline } from '@vicons/ionicons5'
-import { useI18n } from 'vue-i18n'
+// import { useI18n } from 'vue-i18n'
 import account from './panels/account.vue'
 import invite from './panels/invite.vue'
 import overview from './panels/overview.vue'
@@ -66,7 +66,8 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 
-const { t } = useI18n()
+// const { t } = useI18n()
+const t = (str: string) => str
 const activeTab = ref<string>((route.query.tab as string) ?? 'plan')
 const handleTabChange = (val: string) => {
   router.push({ path: route.path, query: { tab: val } })

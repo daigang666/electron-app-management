@@ -9,6 +9,7 @@ import {
   openFileInFolder,
   pathJoin,
   removeFile,
+  unzipFile,
   uuidV4
 } from '../util'
 import { ipcMainHandle } from '../ipc-main'
@@ -76,7 +77,7 @@ const tempDownloadItemIds: string[] = [] // 下载中的 id
  * @param webContents - webContents
  */
 export const listenerDownload = async (
-  event: Event,
+  event: Electron.Event,
   item: DownloadItem,
   webContents: WebContents
 ): Promise<void> => {
@@ -143,7 +144,7 @@ export const listenerDownload = async (
  */
 const handleDownloadData = () => {
   downloadItemData = initDownloadData()
-
+  console.log('downloadItemData', downloadItemData)
   downloadItemData.forEach(item => {
     // 如果下载中或中断的，继续下载
     if (['progressing', 'interrupted'].includes(item.state)) {
@@ -305,6 +306,8 @@ const listenerEvent = () => {
 
   // 打开文件
   ipcMainHandle('openFile', (event, path: string) => openFile(path))
+  // 解压文件
+  ipcMainHandle('unzipFile', (event, path: string) => unzipFile(path))
 
   // 打开文件所在路径
   ipcMainHandle('openFileInFolder', (event, path: string) => openFileInFolder(path))

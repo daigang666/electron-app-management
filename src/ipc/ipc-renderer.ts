@@ -41,6 +41,14 @@ export const ipcRendererInvoke = <T>(eventName: IPCEventName, ...args: any[]): P
 export const openFile = (path: string): Promise<string> => ipcRendererInvoke('openFile', path)
 
 /**
+ * 解压文件
+ * @param zipPath - 压缩文件路径
+ * @param dir - 解压路径
+ */
+export const unzipFile = (zipPath: string, dir: string): Promise<void> =>
+  ipcRendererInvoke('unzipFile', zipPath, dir)
+
+/**
  * 打开下载管理器
  */
 export const openDownloadManager = (): void => {

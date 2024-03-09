@@ -44,13 +44,15 @@ app.commandLine.appendSwitch('allow-running-insecure-content')
 let win: BrowserWindow | null = null
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.mjs')
-const url = process.env.VITE_DEV_SERVER_URL
+const url: string = process.env.VITE_DEV_SERVER_URL!
 const indexHtml = join(process.env.DIST, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
-    icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    width: 1200,
+    height: 680,
+    icon: join(process.env.VITE_PUBLIC!, 'favicon.ico'),
     webPreferences: {
       preload,
       nodeIntegration: true,
@@ -61,13 +63,13 @@ async function createWindow() {
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       contextIsolation: true,
       // 其他选项...
-      allowRunningInsecureContent: true,
-      csp: "script-src 'self' 'unsafe-inline' 'unsafe-eval';",
-      additionalArguments: [
-        `--content-security-policy=${encodeURI(
-          "script-src 'self' 'unsafe-eval'; object-src 'self'"
-        )}`
-      ]
+      allowRunningInsecureContent: true
+      // csp: "script-src 'self' 'unsafe-inline' 'unsafe-eval';",
+      // additionalArguments: [
+      //   `--content-security-policy=${encodeURI(
+      //     "script-src 'self' 'unsafe-eval'; object-src 'self'"
+      //   )}`
+      // ]
     }
   })
 

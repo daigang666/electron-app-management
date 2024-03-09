@@ -1,26 +1,16 @@
 <script setup lang="ts">
-// import { computed } from 'vue';
-import { NLayout, NLayoutContent } from 'naive-ui'
+import { NLayout, NLayoutContent, NDrawer, NDrawerContent } from 'naive-ui'
 import GlobalSider from './globalSider.vue'
-import { AlbumsOutline } from '@vicons/ionicons5'
-// import GlobalFooter from './globalFooter.vue';
-// import { useBasicLayout } from '@/hooks/useBasicLayout';
+import { DownloadOutline } from '@vicons/ionicons5'
+import DownloadList from '@/views/download/index.vue'
+import { ref } from 'vue'
+import { openDownloadManager } from '@/ipc/ipc-renderer'
 
-// const appStore = useAppStore();
-
-// const { isMobile } = useBasicLayout();
-
-// const getMobileClass = computed(() => {
-//   if (isMobile.value) return ['rounded-none', 'shadow-none'];
-//   return ['border', 'rounded-md', 'shadow-md', 'dark:border-neutral-800'];
-// });
-
-// const getContainerClass = computed(() => {
-//   return [
-//     'h-full',
-//     // { 'pl-[260px]': !isMobile.value && !collapsed.value },
-//   ];
-// });
+const downloadVisible = ref(false)
+const handleOpen = () => {
+  downloadVisible.value = true
+  openDownloadManager()
+}
 </script>
 
 <template>
@@ -34,7 +24,12 @@ import { AlbumsOutline } from '@vicons/ionicons5'
           <RouterView v-slot="{ Component, route }">
             <component :is="Component" :key="route.fullPath" />
           </RouterView>
-          <AlbumsOutline class="fixed left-0 top-0" />
+          <DownloadOutline class="fixed right-4 top-4 w-5 h-5" @click="handleOpen" />
+          <NDrawer v-model:show="downloadVisible" :width="502">
+            <NDrawerContent title="下载列表" closable>
+              <DownloadList />
+            </NDrawerContent>
+          </NDrawer>
         </NLayoutContent>
       </NLayout>
       <!-- <GlobalFooter v-if="isMobile" /> -->

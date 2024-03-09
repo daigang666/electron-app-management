@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { NCard, NTabPane, NTabs } from 'naive-ui';
-import General from './General.vue';
-import { SvgIcon } from '@/components/common';
+import { ref } from 'vue'
+import { NCard, NTabPane, NTabs } from 'naive-ui'
+import General from './General.vue'
+import { SvgIcon } from '@/components/common'
 
-const active = ref('General');
+const active = ref('General')
 
-const reload = ref(false);
+const reload = ref(false)
 
 function handleReload() {
-  reload.value = true;
+  reload.value = true
   setTimeout(() => {
-    reload.value = false;
-  }, 0);
+    reload.value = false
+  }, 0)
 }
 </script>
 
@@ -22,7 +22,7 @@ function handleReload() {
       <NTabPane name="General" tab="General">
         <template #tab>
           <SvgIcon class="text-lg" icon="ri:file-user-line" />
-          <span class="ml-2">{{ $t('setting.general') }}</span>
+          <span class="ml-2">{{ 'setting.general' }}</span>
         </template>
         <div class="min-h-[100px]">
           <General v-if="!reload" @update="handleReload" />

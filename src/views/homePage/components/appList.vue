@@ -2,6 +2,7 @@
 import { NSpace, NList, NListItem, NThing, NRate } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import { newDownloadFile, listenerDownloadItemDone } from '@/ipc/ipc-renderer'
+import { IDownloadFile } from '../../../../app/file-manager/interface'
 
 const props = defineProps<{
   title: string

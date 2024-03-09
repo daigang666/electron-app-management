@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
-import type { Language, Theme } from '@/store/modules/app/helper';
-import { SvgIcon } from '@/components/common';
-import { useAppStore } from '@/store';
+import { computed } from 'vue'
+import type { Language, Theme } from '@/store/modules/app/helper'
+import { SvgIcon } from '@/components/common'
+import { useAppStore } from '@/store'
 // import type { UserInfo } from '@/store/modules/user/helper';
 // import { t } from '@/locales/index';
 
@@ -12,12 +12,13 @@ import { useAppStore } from '@/store';
 
 // const emit = defineEmits<Emit>();
 
-const appStore = useAppStore();
+const appStore = useAppStore()
 // const userStore = useUserStore();
 
 // const ms = useMessage();
+const $t = (str: string) => str
 
-const theme = computed(() => appStore.theme);
+const theme = computed(() => appStore.theme)
 
 // const userInfo = computed(() => userStore.userInfo);
 
@@ -29,35 +30,35 @@ const theme = computed(() => appStore.theme);
 
 const language = computed({
   get() {
-    return appStore.language;
+    return appStore.language
   },
   set(value: Language) {
-    appStore.setLanguage(value);
-  },
-});
+    appStore.setLanguage(value)
+  }
+})
 
 const themeOptions: { label: string; key: Theme; icon: string }[] = [
   {
     label: 'Auto',
     key: 'auto',
-    icon: 'ri:contrast-line',
+    icon: 'ri:contrast-line'
   },
   {
     label: 'Light',
     key: 'light',
-    icon: 'ri:sun-foggy-line',
+    icon: 'ri:sun-foggy-line'
   },
   {
     label: 'Dark',
     key: 'dark',
-    icon: 'ri:moon-foggy-line',
-  },
-];
+    icon: 'ri:moon-foggy-line'
+  }
+]
 
 const languageOptions: { label: string; key: Language; value: Language }[] = [
   { label: '中文', key: 'zh-CN', value: 'zh-CN' },
-  { label: 'English', key: 'en-US', value: 'en-US' },
-];
+  { label: 'English', key: 'en-US', value: 'en-US' }
+]
 
 // function updateUserInfo(options: Partial<UserInfo>) {
 //   userStore.updateUserInfo(options);

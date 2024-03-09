@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { app, shell } from 'electron'
+import extract from 'extract-zip'
 
 export { v4 as uuidV4 } from 'uuid'
 
@@ -75,6 +76,32 @@ export const openFile = (path: string): boolean => {
   if (!isExistFile(path)) return false
 
   shell.openPath(path)
+  return true
+}
+/**
+ * 解压文件
+ * @param pathStr - 文件路径
+ */
+export const unzipFile = (pathStr: string): boolean => {
+  pathStr = '/Users/daigang/Downloads/i4ToolsDownloads/v2rayN.zip'
+  if (!isExistFile(pathStr)) return false
+
+  // 根据文件路径path获取压缩文件所在目录
+  const outputDirectory = path.dirname(pathStr)
+
+  // 确保输出目录存在
+  if (!fs.existsSync(outputDirectory)) {
+    fs.mkdirSync(outputDirectory, { recursive: true })
+  }
+
+  // 解压ZIP文件到指定目录
+  extract(pathStr, { dir: outputDirectory })
+    .then(() => {
+      console.log('Extraction complete')
+    })
+    .catch(err => {
+      console.error('Extraction failed', err)
+    })
   return true
 }
 
