@@ -15,7 +15,7 @@ export const ipcRendererListener = (
   eventName: IPCEventName,
   callback: (event: IpcRendererEvent, ...args: any[]) => void
 ): void => {
-  window.ipcRenderer.on(eventName, (event, ...args: any[]) => {
+  window.myAPI.receiveFromMain(eventName, (event, ...args: any[]) => {
     callback(event, ...args)
   })
 }
@@ -27,7 +27,7 @@ export const ipcRendererListener = (
  * @returns `Promise<any>`
  */
 export const ipcRendererInvoke = <T>(eventName: IPCEventName, ...args: any[]): Promise<T> =>
-  window.ipcRenderer.invoke(eventName, ...args)
+  window.myAPI?.invokeMain(eventName, ...args)
 
 /**
  * 获取下载路径

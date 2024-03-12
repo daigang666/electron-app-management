@@ -46,7 +46,7 @@ let win: BrowserWindow | null = null
 const preload = join(__dirname, '../preload/index.mjs')
 const url: string = process.env.VITE_DEV_SERVER_URL!
 const indexHtml = join(process.env.DIST, 'index.html')
-
+console.log(preload, url, 'indexHtml')
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
@@ -80,6 +80,7 @@ async function createWindow() {
     win.webContents.openDevTools()
   } else {
     win.loadFile(indexHtml)
+    win.webContents.openDevTools()
   }
   registerFileManagerService(win)
 

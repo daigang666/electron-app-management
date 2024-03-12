@@ -86,8 +86,8 @@ export default defineConfig(({ command, mode }) => {
     // })(),
 
     server: {
-      host: '0.0.0.0',
-      port: 4001,
+      host: 'localhost',
+      port: 5173,
       open: false,
       proxy: {
         '/api': {
